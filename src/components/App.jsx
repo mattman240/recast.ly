@@ -17,20 +17,25 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     
   }
-  
-  componentDidMount() {
+
+  searchYouTube() {
     this.props.searchYouTube({query: this.state.value}, (videos) => {
       this.setState({
-        videos: videos,
+        videos: videos, 
         currVid: videos[0]
       });
     }); 
+
+  }
+  
+  componentDidMount() {
+    this.searchYouTube();
   }
 
   handleSubmit(e) {
     console.log(e.target.value);
     this.setState({value: e.target.value});
-    this.componentDidMount();
+    this.searchYouTube();
   }
 
   onTitleClick(video) {
