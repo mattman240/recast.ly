@@ -13,6 +13,7 @@ class App extends React.Component {
       currVid: window.exampleVideoData[0]  
     };
     this.onTitleClick = this.onTitleClick.bind(this);
+    
   }
   
   onTitleClick(video) {
@@ -20,13 +21,23 @@ class App extends React.Component {
       currVid: video
     });
   }
+  
+
+  componentDidMount() {
+    this.render();
+    this.props.searchYouTube({query: 'dog'}, this.render);
+  }
+  
+  
+  // var searchYouTube = (options, callback)
+  
 
   render() {
     return (
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em> view goes here</h5></div>
+            <div><Search /></div>
           </div>
         </nav>
         <div className="row">
@@ -47,4 +58,4 @@ class App extends React.Component {
 window.App = App;
 //test
 
-ReactDOM.render(<App />, document.getElementById('app'));
+
