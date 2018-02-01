@@ -10,14 +10,16 @@ class App extends React.Component {
     super(props);
     this.state = {
       videos: window.exampleVideoData,
-      currVid: window.exampleVideoData[0]  
+      currVid: window.exampleVideoData[0],
+      value: 'ping pong'  
     };
     this.onTitleClick = this.onTitleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     
   }
   
   componentDidMount() {
-    this.props.searchYouTube({query:'hackreactor'}, (videos) => {
+    this.props.searchYouTube({query: this.state.value}, (videos) => {
       this.setState({
         videos: videos,
         currVid: videos[0]
@@ -25,6 +27,11 @@ class App extends React.Component {
     }); 
   }
 
+  handleSubmit(e) {
+    console.log(e.target.value);
+    this.setState({value: e.target.value});
+    this.componentDidMount();
+  }
 
   onTitleClick(video) {
     this.setState({
@@ -40,7 +47,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><Search /></div>
+            <div><Search handleSubmit={this.handleSubmit}/></div>
           </div>
         </nav>
         <div className="row">
