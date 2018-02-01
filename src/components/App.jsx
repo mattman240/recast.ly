@@ -16,18 +16,21 @@ class App extends React.Component {
     
   }
   
+  componentDidMount() {
+    this.props.searchYouTube({query:'hackreactor'}, (videos) => {
+      this.setState({
+        videos: videos,
+        currVid: videos[0]
+      });
+    }); 
+  }
+
+
   onTitleClick(video) {
     this.setState({
       currVid: video
     });
   }
-  
-
-  componentDidMount() {
-    this.render();
-    this.props.searchYouTube({query: 'dog'}, this.render);
-  }
-  
   
   // var searchYouTube = (options, callback)
   
