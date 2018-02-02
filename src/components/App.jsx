@@ -11,37 +11,44 @@ class App extends React.Component {
     this.state = {
       videos: window.exampleVideoData,
       currVid: window.exampleVideoData[0],
-      value: 'ping pong'  
+      value: 'ping pong',  
+      details: {}
     };
     this.onTitleClick = this.onTitleClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     
   }
+  
+  componentDidMount() {
+    this.searchYoutube();
+  }
 
-  searchYouTube() {
+  dataYoutube() {
+    this.props.dataYouTube(this.state.currVid.id.videoId, (data) => {
+      this.setState({
+        details: data
+      }, () => console.log(this.state));
+    });
+  }
+
+  searchYoutube() {
     this.props.searchYouTube({query: this.state.value}, (videos) => {
       this.setState({
         videos: videos, 
         currVid: videos[0]
-      });
+      }, () => this.dataYoutube());
     }); 
-
-  }
-  
-  componentDidMount() {
-    this.searchYouTube();
   }
 
   handleSubmit(e) {
     console.log(e.target.value);
-    this.setState({value: e.target.value});
-    this.searchYouTube();
+    this.setState({value: e.target.value}, () => this.searchYoutube());
   }
 
   onTitleClick(video) {
     this.setState({
       currVid: video
-    });
+    }, () => this.dataYoutube(this.state.currVid.id.videoId));    
   }
   
   // var searchYouTube = (options, callback)
@@ -57,7 +64,9 @@ class App extends React.Component {
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <div><VideoPlayer video={this.state.currVid}/></div>
+            <div>
+              <VideoPlayer video={this.state.currVid} details={this.state.details}/>
+            </div>
           </div>
           <div className="col-md-5">
             <div> <VideoList videos={this.state.videos} onTitleClick={this.onTitleClick}/> </div>
